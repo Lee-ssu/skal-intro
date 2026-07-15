@@ -62,3 +62,28 @@ Practice 2 테스트만 실행하려면 다음 명령을 사용합니다.
 ```bash
 .venv/bin/python -m unittest -v test_practice2.py
 ```
+
+## 종합실습 1 — 비동기 날씨 수집·CSV·Parquet
+
+Open-Meteo에서 서울, 도쿄, 뉴욕, 런던의 현재 기온을 비동기로 수집합니다.
+교수님 보완 안내에 따라 countries.dev 국가 API로 시간대 정보를 확인하고,
+도시별 IANA 시간대로 현지시각을 계산합니다. 결과는 `weather.csv`와
+`weather.parquet`으로 저장한 뒤 다시 읽어 출력합니다.
+
+의존성을 준비한 뒤 실행합니다.
+
+```bash
+.venv/bin/python -m pip install -r requirements.txt
+.venv/bin/python comprehensive_step1_async_api.py
+.venv/bin/python comprehensive_step2_pydantic.py
+.venv/bin/python comprehensive_step3_csv.py
+.venv/bin/python comprehensive_step4_parquet.py
+.venv/bin/python 이상수.py
+```
+
+pytest와 Ruff 검사는 다음과 같이 실행합니다.
+
+```bash
+.venv/bin/python -m pytest -v comprehensive_step5_pytest.py
+.venv/bin/ruff check comprehensive_step*.py 이상수.py
+```

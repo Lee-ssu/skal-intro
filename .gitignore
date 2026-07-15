@@ -4,3 +4,5 @@ __pycache__/
 practice2_valid.csv
 practice2_errors.json
 practice2_input.csv
+weather.csv
+weather.parquet
