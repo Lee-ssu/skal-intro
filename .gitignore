@@ -1,2 +1,5 @@
 __pycache__/
 *.py[cod]
+.venv/
+practice2_valid.csv
+practice2_errors.json
