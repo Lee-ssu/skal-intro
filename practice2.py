@@ -1,9 +1,9 @@
 # -----------------------------------------------------------------------------
 # 작성자 : 이상수
-# 작성목적 : 파일 I/O, 예외 처리 및 Pydantic 검증 파이프라인 연습
+# 작성목적 : JSON 기반 파일 I/O, 예외 처리 및 Pydantic 검증 파이프라인 연습
 # 작성일 : 2026년 7월 15일
 #
-# CSV 파일을 안전하게 읽고 각 행을 Pydantic 모델로 검증한 뒤,
+# 제공 JSON에서 7건짜리 연습 CSV를 만들고 Pydantic 모델로 검증한 뒤,
 # 정상 데이터와 오류 데이터를 각각 CSV와 JSON 파일로 저장합니다.
 #
 # 변경사항 내역
@@ -12,6 +12,7 @@
 # 0.3 : 2026년 7월 15일 - valid/errors 검증 파이프라인 작성
 # 0.4 : 2026년 7월 15일 - 결과 CSV·JSON 저장 및 재로딩 검증 작성
 # 0.5 : 2026년 7월 15일 - 체크포인트 assert와 오류 로그 추가
+# 0.6 : 2026년 7월 15일 - 제공 JSON과 month 필드를 기준으로 입력 생성
 # -----------------------------------------------------------------------------
 
 """Practice 2: 파일 I/O, 예외 처리와 Pydantic v2 검증 파이프라인."""
@@ -22,7 +23,6 @@ import csv
 import json
 import logging
 import sys
-from datetime import date
 from pathlib import Path
 from typing import Any, Iterable, Mapping
 
@@ -38,7 +38,8 @@ except ImportError:
 
 
 BASE_DIR = Path(__file__).resolve().parent
-INPUT_CSV = BASE_DIR / "Python_Practice2_Data.csv"
+SOURCE_JSON = BASE_DIR / "Python_Practice2_Data.json"
+INPUT_CSV = BASE_DIR / "practice2_input.csv"
 VALID_CSV = BASE_DIR / "practice2_valid.csv"
 ERRORS_JSON = BASE_DIR / "practice2_errors.json"
 LOGGER = logging.getLogger("practice2")
@@ -49,18 +50,18 @@ class SalesRecord(BaseModel):
 
     model_config = ConfigDict(extra="forbid", str_strip_whitespace=True)
 
-    date: date
+    month: str = Field(pattern=r"^\d{4}-(0[1-9]|1[0-2])$")
     region: str
-    amount: float = Field(ge=0)
+    amount: float = Field(gt=0)
     category: str | None = None
 
-    @field_validator("date", mode="before")
+    @field_validator("month", mode="before")
     @classmethod
-    def date_must_not_be_empty(cls, value: Any) -> Any:
-        """date가 비어 있으면 날짜 변환 전에 명확한 오류를 발생시킨다."""
+    def month_must_not_be_empty(cls, value: Any) -> Any:
+        """month가 비어 있으면 형식 검사 전에 명확한 오류를 발생시킨다."""
 
         if value is None or not str(value).strip():
-            raise ValueError("date는 비어 있을 수 없습니다.")
+            raise ValueError("month는 비어 있을 수 없습니다.")
         return value
 
     @field_validator("region")
@@ -80,6 +81,43 @@ class SalesRecord(BaseModel):
         return None if value is None or not str(value).strip() else value
 
 
+def prepare_practice_csv(
+    source_path: str | Path = SOURCE_JSON,
+    output_path: str | Path = INPUT_CSV,
+    logger: logging.Logger = LOGGER,
+) -> bool:
+    """제공 JSON을 바탕으로 정상 4건과 오류 3건의 연습 CSV를 만든다.
+
+    앞 4건은 그대로 사용하고, 다음 3건에는 각 검증 규칙을 확인하도록
+    빈 month, 빈 region, 0원 amount를 한 가지씩 적용한다.
+    """
+
+    try:
+        with Path(source_path).open("r", encoding="utf-8") as file:
+            source_data = json.load(file)
+
+        if not isinstance(source_data, list) or len(source_data) < 7:
+            raise ValueError("제공 JSON에는 최소 7개의 판매 레코드가 필요합니다.")
+
+        raw_data = [dict(row) for row in source_data[:7]]
+        raw_data[4]["month"] = ""
+        raw_data[5]["region"] = ""
+        raw_data[6]["amount"] = 0
+
+        with Path(output_path).open("w", encoding="utf-8-sig", newline="") as file:
+            writer = csv.DictWriter(
+                file, fieldnames=["month", "region", "amount", "category"]
+            )
+            writer.writeheader()
+            writer.writerows(raw_data)
+    except (OSError, UnicodeError, json.JSONDecodeError, ValueError) as error:
+        logger.error("연습 CSV 생성 실패 (%s): %s", type(error).__name__, error)
+        return False
+
+    logger.info("제공 JSON 기반 연습 CSV 생성: %s", output_path)
+    return True
+
+
 def safe_load_csv(
     file_path: str | Path, logger: logging.Logger = LOGGER
 ) -> list[dict[str, str]] | None:
@@ -95,7 +133,9 @@ def safe_load_csv(
             reader = csv.DictReader(file)
             if reader.fieldnames is None:
                 raise csv.Error("CSV 헤더가 없습니다.")
-            return list(reader)
+            rows = list(reader)
+            logger.info("CSV 로딩 성공: %d건", len(rows))
+            return rows
     except (OSError, UnicodeError, csv.Error) as error:
         logger.error("CSV 로딩 실패 (%s): %s", type(error).__name__, error)
         return None
@@ -156,6 +196,9 @@ def save_results(
 
 def run_pipeline() -> tuple[list[SalesRecord], list[dict[str, Any]]] | None:
     """읽기 → 검증 → 저장 → 재로딩의 전체 파이프라인을 수행한다."""
+
+    if not prepare_practice_csv():
+        return None
 
     raw_data = safe_load_csv(INPUT_CSV)
     assert raw_data is not None, "입력 CSV 로딩에 실패했습니다."

@@ -47,8 +47,11 @@ python3 -m venv .venv
 .venv/bin/python -m pip install -r requirements.txt
 ```
 
-실행하면 정상 데이터 4건은 `practice2_valid.csv`, 오류 데이터 3건은
-`practice2_errors.json`으로 저장한 뒤 결과 CSV를 다시 읽어 건수를 검증합니다.
+실행하면 `Python_Practice2_Data.json`의 앞 7건을 바탕으로 검증용 CSV를
+만듭니다. 교수님 지침에 따라 `date` 대신 `month` 필드를 사용하며, 앞 4건은
+정상 데이터로 유지하고 뒤 3건에는 빈 `month`, 빈 `region`, `amount=0`을
+각각 적용해 검증합니다. 정상 데이터는 `practice2_valid.csv`, 오류 데이터는
+`practice2_errors.json`으로 저장한 뒤 결과 CSV를 다시 읽어 건수를 확인합니다.
 
 ```bash
 .venv/bin/python practice2.py

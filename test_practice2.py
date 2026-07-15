@@ -11,7 +11,9 @@ from pydantic import ValidationError
 
 from practice2 import (
     INPUT_CSV,
+    SOURCE_JSON,
     SalesRecord,
+    prepare_practice_csv,
     safe_load_csv,
     save_results,
     validate_records,
@@ -41,30 +43,34 @@ class SafeLoadTests(unittest.TestCase):
 class ValidationTests(unittest.TestCase):
     def test_schema_rules(self) -> None:
         valid = SalesRecord.model_validate(
-            {"date": "2026-07-15", "region": "서울", "amount": "0", "category": ""}
+            {"month": "2026-07", "region": "서울", "amount": "1", "category": ""}
         )
         self.assertIsNone(valid.category)
 
         with self.assertRaises(ValidationError):
             SalesRecord.model_validate(
-                {"date": "2026-07-15", "region": "", "amount": "100", "category": "전자"}
+                {"month": "2026-07", "region": "", "amount": "100", "category": "전자"}
             )
         with self.assertRaises(ValidationError):
             SalesRecord.model_validate(
-                {"date": "2026-07-15", "region": "서울", "amount": "-1", "category": "전자"}
+                {"month": "2026-07", "region": "서울", "amount": "0", "category": "전자"}
             )
 
     def test_valid_four_errors_three_and_error_log(self) -> None:
-        raw_data = safe_load_csv(INPUT_CSV)
-        self.assertIsNotNone(raw_data)
+        with tempfile.TemporaryDirectory() as directory:
+            input_path = Path(directory) / "input.csv"
+            self.assertTrue(prepare_practice_csv(SOURCE_JSON, input_path))
+            raw_data = safe_load_csv(input_path)
+            self.assertIsNotNone(raw_data)
 
-        output = io.StringIO()
-        valid, errors = validate_records(raw_data or [], make_logger(output))
-        self.assertEqual(len(valid), 4)
-        self.assertEqual(len(errors), 3)
-        self.assertIn("ValidationError", output.getvalue())
+            output = io.StringIO()
+            valid, errors = validate_records(raw_data or [], make_logger(output))
+            self.assertEqual(len(valid), 4)
+            self.assertEqual(len(errors), 3)
+            self.assertIn("ValidationError", output.getvalue())
 
     def test_save_and_reload_four_records_with_korean_json(self) -> None:
+        self.assertTrue(prepare_practice_csv())
         raw_data = safe_load_csv(INPUT_CSV) or []
         valid, errors = validate_records(raw_data)
 

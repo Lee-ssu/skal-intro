@@ -3,3 +3,4 @@ __pycache__/
 .venv/
 practice2_valid.csv
 practice2_errors.json
+practice2_input.csv
