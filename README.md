@@ -87,3 +87,12 @@ pytest와 Ruff 검사는 다음과 같이 실행합니다.
 .venv/bin/python -m pytest -v comprehensive_step5_pytest.py
 .venv/bin/ruff check comprehensive_step*.py 이상수.py
 ```
+
+## Practice 3 — Pandas EDA · Polars Lazy · DuckDB SQL 비교
+
+2026-07-16 실습은 `sales_100k.csv`의 EDA, IQR 이상치 처리, 세 도구의 동일 집계와 성능 비교를 수행합니다.
+
+- 상세 실행 안내: [README_practice3.md](README_practice3.md)
+- 실행 결과: [practice3_result.md](practice3_result.md)
+- 메인 코드: [practice3.py](practice3.py)
+- 자동 테스트: [test_practice3.py](test_practice3.py)

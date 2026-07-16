@@ -1,8 +1,18 @@
+.venv/
 __pycache__/
 *.py[cod]
 .venv/
+.pytest_cache/
+.ruff_cache/
+.DS_Store
+
+# Practice 2 및 종합실습 생성 파일
 practice2_valid.csv
 practice2_errors.json
 practice2_input.csv
 weather.csv
 weather.parquet
+
+# Practice 3 원본 실습 데이터는 크기가 커서 GitHub에 올리지 않는다.
+sales_100k.csv
+sales_100k (1).csv
