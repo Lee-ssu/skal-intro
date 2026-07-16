@@ -96,3 +96,12 @@ pytest와 Ruff 검사는 다음과 같이 실행합니다.
 - 실행 결과: [practice3_result.md](practice3_result.md)
 - 메인 코드: [practice3.py](practice3.py)
 - 자동 테스트: [test_practice3.py](test_practice3.py)
+
+## Practice 4 — 시각화 · 통계 검정 · sklearn Pipeline
+
+Practice 3의 IQR 정제 데이터를 연결해 2×2 EDA, t-test, 카이제곱, Pipeline 학습·저장·재로딩과 Plotly HTML 저장을 수행합니다.
+
+- 상세 실행 안내: [README_practice4.md](README_practice4.md)
+- 실행 결과: [practice4_result.md](practice4_result.md)
+- 메인 코드: [practice4.py](practice4.py)
+- 자동 테스트: [test_practice4.py](test_practice4.py)

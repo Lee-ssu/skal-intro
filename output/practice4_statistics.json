@@ -1,0 +1,24 @@
+{
+  "author": "이상수",
+  "significance_level": 0.05,
+  "t_test": {
+    "seoul_count": 241071,
+    "busan_count": 116295,
+    "seoul_mean": 2476501.174968076,
+    "busan_mean": 2471075.696090512,
+    "t_statistic": 0.7269037600100009,
+    "p_value": 0.4672856547275443,
+    "significant": false,
+    "interpretation": "p-value >= 0.05이므로 서울과 부산의 평균 매출 차이는 통계적으로 유의하지 않다."
+  },
+  "chi_square": {
+    "rows": 8,
+    "columns": 8,
+    "chi2_statistic": 74.99185234526905,
+    "p_value": 0.009853605191471963,
+    "degrees_of_freedom": 49,
+    "min_expected_frequency": 8365.11771121212,
+    "significant": true,
+    "interpretation": "p-value < 0.05이므로 지역과 카테고리는 서로 독립적이지 않다."
+  }
+}
