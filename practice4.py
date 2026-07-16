@@ -188,7 +188,10 @@ def create_eda_figure(
     axes[0, 1].set_ylabel("매출액")
     axes[0, 1].tick_params(axis="x", rotation=30)
 
-    sns.lineplot(data=monthly, x="month", y="amount", marker="o", ax=axes[1, 0])
+    month_positions = np.arange(len(monthly))
+    axes[1, 0].plot(month_positions, monthly["amount"], marker="o")
+    axes[1, 0].set_xticks(month_positions)
+    axes[1, 0].set_xticklabels(monthly["month"])
     axes[1, 0].set_title("월별 총매출 추이")
     axes[1, 0].set_xlabel("월")
     axes[1, 0].set_ylabel("총매출")
@@ -206,7 +209,7 @@ def create_eda_figure(
     )
     axes[1, 1].set_title("수치형 변수 상관 히트맵")
 
-    fig.suptitle("Practice 4 - EDA 시각화 4종", fontsize=18, fontweight="bold")
+    fig.suptitle("Practice 4 - EDA 시각화 4종", fontsize=18)
     fig.tight_layout(rect=(0, 0, 1, 0.97))
     fig.savefig(output_path, dpi=160, bbox_inches="tight")
     plt.close(fig)
@@ -410,7 +413,12 @@ def create_plotly_chart(grouped: pd.DataFrame, output_path: Path) -> None:
         },
     )
     figure.update_layout(template="plotly_white", legend_title_text="카테고리")
-    figure.write_html(output_path, include_plotlyjs="cdn", full_html=True)
+    figure.write_html(
+        output_path,
+        include_plotlyjs="cdn",
+        full_html=True,
+        div_id="practice4-region-category",
+    )
     LOGGER.info("Plotly 인터랙티브 차트를 저장했습니다: %s", output_path)
 
 
