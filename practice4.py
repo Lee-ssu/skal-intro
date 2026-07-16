@@ -21,6 +21,7 @@ import argparse
 import json
 import logging
 import sys
+import webbrowser
 from dataclasses import asdict, dataclass
 from pathlib import Path
 
@@ -472,7 +473,22 @@ def parse_args() -> argparse.Namespace:
         help="히스토그램·박스플롯에 사용할 재현 가능한 표본 크기",
     )
     parser.add_argument("--test-size", type=float, default=0.2, help="모델 평가 데이터 비율")
+    parser.add_argument(
+        "--open-results",
+        action="store_true",
+        help="실행 완료 후 EDA PNG와 Plotly HTML을 기본 브라우저로 열기",
+    )
     return parser.parse_args()
+
+
+def open_visual_results(eda_path: Path, plotly_path: Path) -> None:
+    """저장된 정적·인터랙티브 그래프를 기본 브라우저에서 연다."""
+
+    for result_path in (eda_path, plotly_path):
+        try:
+            webbrowser.open(result_path.resolve().as_uri(), new=2)
+        except webbrowser.Error as error:
+            LOGGER.warning("그래프를 자동으로 열지 못했습니다: %s", error)
 
 
 def run(args: argparse.Namespace) -> None:
@@ -519,6 +535,8 @@ def run(args: argparse.Namespace) -> None:
     print(f"Pipeline 모델: {model_path}")
     print(f"통계 JSON: {output_dir / 'practice4_statistics.json'}")
     print(f"모델 지표 CSV: {output_dir / 'practice4_model_metrics.csv'}")
+    if args.open_results:
+        open_visual_results(eda_path, plotly_path)
 
 
 def main() -> int:

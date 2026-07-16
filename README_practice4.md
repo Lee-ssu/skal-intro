@@ -29,6 +29,14 @@ cd /Users/leesangsu/Documents/skala07.16
 .venv/bin/python practice4.py
 ```
 
+실행이 끝난 뒤 그래프를 화면에서 바로 열려면 다음 옵션을 사용한다.
+
+```bash
+.venv/bin/python practice4.py --open-results
+```
+
+VS Code의 `Practice 4 실행` 구성은 이 옵션을 자동으로 사용한다.
+
 ## 검사
 
 ```bash

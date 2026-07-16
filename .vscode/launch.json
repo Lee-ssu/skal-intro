@@ -7,6 +7,7 @@
       "request": "launch",
       "program": "${workspaceFolder}/practice4.py",
       "cwd": "${workspaceFolder}",
+      "args": ["--open-results"],
       "console": "integratedTerminal",
       "justMyCode": true
     }
