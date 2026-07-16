@@ -10,6 +10,16 @@
       "args": ["--open-results"],
       "console": "integratedTerminal",
       "justMyCode": true
+    },
+    {
+      "name": "종합실습 2 실행",
+      "type": "debugpy",
+      "request": "launch",
+      "program": "${workspaceFolder}/Test2_이상수.py",
+      "cwd": "${workspaceFolder}",
+      "args": ["--open-results"],
+      "console": "integratedTerminal",
+      "justMyCode": true
     }
   ]
 }

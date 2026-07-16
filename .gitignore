@@ -16,3 +16,6 @@ weather.parquet
 # Practice 3 원본 실습 데이터는 크기가 커서 GitHub에 올리지 않는다.
 sales_100k.csv
 sales_100k (1).csv
+
+# 종합실습 2 서울시 공공데이터 원본(47MB, CP949)은 로컬에서만 사용한다.
+서울시 상권분석서비스(추정매출-상권).csv

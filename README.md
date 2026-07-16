@@ -105,3 +105,11 @@ Practice 3의 IQR 정제 데이터를 연결해 2×2 EDA, t-test, 카이제곱, 
 - 실행 결과: [practice4_result.md](practice4_result.md)
 - 메인 코드: [practice4.py](practice4.py)
 - 자동 테스트: [test_practice4.py](test_practice4.py)
+
+## 종합실습 2 — 서울시 상권 추정매출 분석
+
+- 상세 실행 및 CSV 점검 안내: [README_comprehensive_practice2.md](README_comprehensive_practice2.md)
+- 실제 실행 결과: [comprehensive_practice2_result.md](comprehensive_practice2_result.md)
+- 최종 제출 코드: [Test2_이상수.py](Test2_이상수.py), [git2_이상수.py](git2_이상수.py)
+- 이메일 제출 압축 파일: `Test2_이상수.zip`
+- 자동 테스트: [test_comprehensive_practice2.py](test_comprehensive_practice2.py)

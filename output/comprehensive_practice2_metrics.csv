@@ -1,0 +1,2 @@
+train_rows,test_rows,r2_score,reloaded_r2_score,mae,rmse,reload_prediction_match
+85536,21384,0.9242140147324814,0.9242140147324814,378465893.09382564,1667769975.1137803,True
