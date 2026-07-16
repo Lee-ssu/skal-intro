@@ -9,7 +9,6 @@ DATE_FOLDER="${1:?날짜 폴더 이름이 필요합니다. 예: skala07.17}"
 TARGET_DIR="${2:-$HOME/Documents/$DATE_FOLDER}"
 REMOTE_URL="https://github.com/Lee-ssu/skal-intro.git"
 BASE_BRANCH="main"
-WORK_BRANCH="codex/$DATE_FOLDER"
 
 mkdir -p "$TARGET_DIR"
 cd "$TARGET_DIR"
@@ -31,9 +30,11 @@ if [[ ! -d .git ]]; then
     git init
     git remote add origin "$REMOTE_URL"
     git fetch origin "$BASE_BRANCH"
-    git symbolic-ref HEAD "refs/heads/$WORK_BRANCH"
-    git update-ref "refs/heads/$WORK_BRANCH" "refs/remotes/origin/$BASE_BRANCH"
+    git symbolic-ref HEAD "refs/heads/$BASE_BRANCH"
+    git update-ref "refs/heads/$BASE_BRANCH" "refs/remotes/origin/$BASE_BRANCH"
     git read-tree "refs/remotes/origin/$BASE_BRANCH"
+    git config "branch.$BASE_BRANCH.remote" origin
+    git config "branch.$BASE_BRANCH.merge" "refs/heads/$BASE_BRANCH"
 
     # 이전 날짜 파일은 원격 이력에 유지하되 새 날짜 폴더에는 표시하지 않는다.
     git ls-files -z | xargs -0 git update-index --skip-worktree

@@ -6,11 +6,10 @@
 
 - 로컬 폴더: `~/Documents/skalaMM.DD`
 - GitHub 저장소: `Lee-ssu/skal-intro`
-- 기본 브랜치: `main`
-- 날짜별 작업 브랜치: `codex/skalaMM.DD`
+- GitHub 브랜치: `main`
 - `.venv`, 원본 대용량 데이터, 캐시는 커밋하지 않음
 - 코드, README, 테스트, 작은 실행 결과만 명시적으로 커밋
-- 작업 완료 후 Ruff·pytest·실제 실행을 확인하고 push 및 Draft PR 생성
+- 작업 완료 후 Ruff·pytest·실제 실행을 확인하고 `main`에 push
 
 ## 다음 날짜 폴더 준비
 
@@ -32,8 +31,8 @@
 2. `gh`가 없으면 Homebrew로 설치
 3. GitHub 인증 확인과 필요 시 브라우저 로그인
 4. `Lee-ssu/skal-intro` 원격 연결
-5. `origin/main`에서 날짜별 `codex/` 브랜치 생성
+5. 최신 `origin/main` 이력을 로컬 `main`에 연결
 6. 독립 가상환경 생성
 7. `requirements.txt`가 있으면 패키지 설치
 
-커밋과 push는 그날 작업과 검증이 끝난 뒤 수행한다.
+커밋과 `main` push는 그날 작업과 검증이 끝난 뒤 수행한다. 로컬 날짜 폴더는 서로 분리되지만 GitHub 기록은 하나의 `main` 브랜치에 날짜순으로 누적된다.

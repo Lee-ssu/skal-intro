@@ -1,6 +1,8 @@
 # Practice 3 - Pandas EDA · Polars Lazy · DuckDB SQL 비교
 
 > 2026-07-16 학습 및 실습 기록
+>
+> 작성자: 이상수
 
 `sales_100k.csv`를 이용해 Pandas, Polars, DuckDB의 동일한 집계 결과와 실행 시간을 비교하는 실습입니다. 실제 입력 파일은 약 100만 행입니다.
 
